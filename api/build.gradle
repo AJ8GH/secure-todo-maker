@@ -1,0 +1,14 @@
+plugins {
+  id 'java'
+}
+
+group = 'io.github.aj8gh'
+version = '1.0.0-SNAPSHOT'
+
+dependencies {
+  compileOnly "org.projectlombok:lombok:$versions.lombok"
+
+  testImplementation platform("org.junit:junit-bom:$versions.junit")
+  testImplementation 'org.junit.jupiter:junit-jupiter'
+  testImplementation "org.mockito:mockito-core:$versions.mockito"
+}

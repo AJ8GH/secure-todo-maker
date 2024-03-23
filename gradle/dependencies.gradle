@@ -1,0 +1,5 @@
+ext.versions = [
+    'junit': '5.10.1',
+    'mockito': '5.11.0',
+    'lombok': '1.18.32',
+]

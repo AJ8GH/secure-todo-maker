@@ -1,0 +1,17 @@
+plugins {
+  id 'java'
+}
+
+apply from: 'gradle/dependencies.gradle'
+
+group = 'io.github.aj8gh'
+version = '1.0-SNAPSHOT'
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+test {
+  useJUnitPlatform()
+}

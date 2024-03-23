@@ -1,0 +1,3 @@
+rootProject.name = 'secure-todo-maker'
+include 'api'
+
