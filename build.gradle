@@ -1,17 +1,54 @@
 plugins {
-  id 'java'
+  id 'org.springframework.boot'
 }
 
-apply from: 'gradle/dependencies.gradle'
+allprojects {
+  apply plugin: 'java'
 
-group = 'io.github.aj8gh'
-version = '1.0-SNAPSHOT'
+  group = "$groupId"
+  version = "$projectVersion"
 
-repositories {
-  mavenCentral()
-  mavenLocal()
+  repositories {
+    mavenCentral()
+    mavenLocal()
+  }
+
+  java {
+    toolchain {
+      languageVersion.set(JavaLanguageVersion.of(javaVersion))
+    }
+  }
+
+  bootJar {
+    enabled = false
+  }
+
+  jar {
+    enabled = true
+  }
 }
 
-test {
-  useJUnitPlatform()
+subprojects {
+  apply plugin: 'org.springframework.boot'
+  apply plugin: 'io.spring.dependency-management'
+
+  dependencies {
+    compileOnly 'org.projectlombok:lombok'
+
+    testImplementation platform('org.junit:junit-bom')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.mockito:mockito-core'
+  }
+
+  test {
+    useJUnitPlatform()
+  }
+
+  bootJar {
+    enabled = false
+  }
+
+  jar {
+    enabled = true
+  }
 }
