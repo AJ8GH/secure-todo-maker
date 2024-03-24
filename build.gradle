@@ -1,9 +1,19 @@
 plugins {
   id 'org.springframework.boot'
+  id 'checkstyle'
+}
+
+def disable = {
+  enabled = false
+}
+
+def enable = {
+  enabled = true
 }
 
 allprojects {
   apply plugin: 'java'
+  apply plugin: 'checkstyle'
 
   group = "$groupId"
   version = "$projectVersion"
@@ -19,13 +29,8 @@ allprojects {
     }
   }
 
-  bootJar {
-    enabled = false
-  }
-
-  jar {
-    enabled = true
-  }
+  bootJar disable
+  jar enable
 }
 
 subprojects {
@@ -34,6 +39,7 @@ subprojects {
 
   dependencies {
     compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation platform('org.junit:junit-bom')
     testImplementation 'org.junit.jupiter:junit-jupiter'
@@ -47,11 +53,6 @@ subprojects {
     useJUnitPlatform()
   }
 
-  bootJar {
-    enabled = false
-  }
-
-  jar {
-    enabled = true
-  }
+  bootJar disable
+  jar enable
 }
