@@ -1,24 +1,11 @@
 plugins {
   id 'java'
   id 'checkstyle'
-  id 'jacoco'
   id 'jacoco-report-aggregation'
   id 'org.springframework.boot'
 }
 
 apply plugin: 'jacoco-report-aggregation'
-
-tasks.named('check') {
-  dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
-}
-
-def disable = {
-  enabled = false
-}
-
-def enable = {
-  enabled = true
-}
 
 dependencies {
   implementation project(':api')
@@ -26,13 +13,34 @@ dependencies {
   implementation project(':persistence')
 }
 
+def static jacocoExcludes() {
+  return [
+      '**/io/github/aj8gh/**/Application.*',
+  ]
+}
+
+tasks.named('check') {
+  dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+}
+
+testCodeCoverageReport {
+  afterEvaluate {
+    classDirectories.setFrom(files(classDirectories.files.collect {
+      fileTree(dir: it, exclude: jacocoExcludes())
+    }))
+  }
+}
+
+def disable = { enabled = false }
+def enable = { enabled = true }
+
 allprojects {
   apply plugin: 'java'
   apply plugin: 'checkstyle'
   apply plugin: 'io.spring.dependency-management'
 
-  group = "$groupId"
-  version = "$projectVersion"
+  group = groupId
+  version = projectVersion
 
   repositories {
     mavenCentral()
@@ -68,12 +76,28 @@ subprojects {
   bootJar disable
   jar enable
 
-  jacocoTestReport {
-    dependsOn test
-  }
-
   test {
     useJUnitPlatform()
-    finalizedBy jacocoTestReport
+    finalizedBy jacocoTestReport, jacocoTestCoverageVerification
+  }
+
+  jacocoTestReport {
+    dependsOn test
+    afterEvaluate {
+      classDirectories.setFrom(files(classDirectories.files.collect {
+        fileTree(dir: it, exclude: jacocoExcludes())
+      }))
+    }
+  }
+
+  jacocoTestCoverageVerification {
+    violationRules {
+      rule {
+        limit {
+          minimum = new BigDecimal(minimumCoverage)
+        }
+      }
+      setFailOnViolation(Boolean.valueOf(shouldFailOnViolation))
+    }
   }
 }
