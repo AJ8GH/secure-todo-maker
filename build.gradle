@@ -11,8 +11,9 @@ dependencies {
   implementation project(serviceModule)
 }
 
-def disable = { enabled = false }
-def enable = { enabled = true }
+bootJar {
+  mainClass = mainClassName
+}
 
 allprojects {
   apply plugin: 'java'
@@ -32,9 +33,6 @@ allprojects {
       languageVersion.set(JavaLanguageVersion.of(javaVersion))
     }
   }
-
-  bootJar disable
-  jar enable
 }
 
 subprojects {
@@ -52,8 +50,9 @@ subprojects {
     testImplementation 'org.awaitility:awaitility'
   }
 
-  bootJar disable
-  jar enable
+  bootJar {
+    enabled = false
+  }
 
   test {
     useJUnitPlatform()
