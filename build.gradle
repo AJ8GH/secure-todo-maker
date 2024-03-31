@@ -4,6 +4,8 @@ plugins {
 }
 
 apply from: jacocoBuildScript
+apply from: allProjectsBuildScript
+apply from: subProjectsBuildScript
 
 dependencies {
   implementation project(apiModule)
@@ -13,49 +15,4 @@ dependencies {
 
 bootJar {
   mainClass = mainClassName
-}
-
-allprojects {
-  apply plugin: 'java'
-  apply plugin: 'checkstyle'
-  apply plugin: 'io.spring.dependency-management'
-
-  group = groupId
-  version = projectVersion
-
-  repositories {
-    mavenCentral()
-    mavenLocal()
-  }
-
-  java {
-    toolchain {
-      languageVersion.set(JavaLanguageVersion.of(javaVersion))
-    }
-  }
-}
-
-subprojects {
-  apply plugin: 'org.springframework.boot'
-
-  dependencies {
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-
-    testImplementation platform('org.junit:junit-bom')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.mockito:mockito-core'
-    testImplementation 'org.mockito:mockito-junit-jupiter'
-    testImplementation 'org.assertj:assertj-core'
-    testImplementation 'org.awaitility:awaitility'
-  }
-
-  bootJar {
-    enabled = false
-  }
-
-  test {
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport, jacocoTestCoverageVerification
-  }
 }

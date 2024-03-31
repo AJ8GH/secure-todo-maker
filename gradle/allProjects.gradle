@@ -1,0 +1,19 @@
+allprojects {
+  apply plugin: 'java'
+  apply plugin: 'checkstyle'
+  apply plugin: 'io.spring.dependency-management'
+
+  group = groupId
+  version = projectVersion
+
+  repositories {
+    mavenCentral()
+    mavenLocal()
+  }
+
+  java {
+    toolchain {
+      languageVersion.set(JavaLanguageVersion.of(javaVersion))
+    }
+  }
+}
