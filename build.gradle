@@ -1,34 +1,14 @@
 plugins {
   id 'java'
-  id 'checkstyle'
-  id 'jacoco-report-aggregation'
   id 'org.springframework.boot'
 }
 
-apply plugin: 'jacoco-report-aggregation'
+apply from: jacocoBuildScript
 
 dependencies {
-  implementation project(':api')
-  implementation project(':service')
-  implementation project(':persistence')
-}
-
-def static jacocoExcludes() {
-  return [
-      '**/io/github/aj8gh/**/Application.*',
-  ]
-}
-
-tasks.named('check') {
-  dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
-}
-
-testCodeCoverageReport {
-  afterEvaluate {
-    classDirectories.setFrom(files(classDirectories.files.collect {
-      fileTree(dir: it, exclude: jacocoExcludes())
-    }))
-  }
+  implementation project(apiModule)
+  implementation project(persistenceModule)
+  implementation project(serviceModule)
 }
 
 def disable = { enabled = false }
@@ -59,7 +39,6 @@ allprojects {
 
 subprojects {
   apply plugin: 'org.springframework.boot'
-  apply plugin: 'jacoco'
 
   dependencies {
     compileOnly 'org.projectlombok:lombok'
@@ -79,25 +58,5 @@ subprojects {
   test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport, jacocoTestCoverageVerification
-  }
-
-  jacocoTestReport {
-    dependsOn test
-    afterEvaluate {
-      classDirectories.setFrom(files(classDirectories.files.collect {
-        fileTree(dir: it, exclude: jacocoExcludes())
-      }))
-    }
-  }
-
-  jacocoTestCoverageVerification {
-    violationRules {
-      rule {
-        limit {
-          minimum = new BigDecimal(minimumCoverage)
-        }
-      }
-      setFailOnViolation(Boolean.valueOf(shouldFailOnViolation))
-    }
   }
 }
