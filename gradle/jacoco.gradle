@@ -1,3 +1,5 @@
+apply plugin: 'jacoco-report-aggregation'
+
 def static jacocoExcludes() {
   return [
       '**/io/github/aj8gh/**/Application.*',
