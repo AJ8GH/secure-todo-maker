@@ -19,3 +19,7 @@ dependencies {
 bootJar {
   mainClass = mainClassName
 }
+
+bootRun {
+  mainClass = mainClassName
+}
