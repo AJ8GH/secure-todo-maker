@@ -3,5 +3,7 @@ spring:
     ansi:
       enabled: always
 
-key:
-  location: jwtRS256.pkcs8.pem
+jwt:
+  issuer: https://aj8gh.github.io
+  rsa-key-size: 2048
+  ttl-days: 1000
