@@ -8,8 +8,8 @@ allprojects {
   version = projectVersion
 
   repositories {
-    mavenCentral()
     mavenLocal()
+    mavenCentral()
   }
 
   java {

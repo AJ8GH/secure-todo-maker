@@ -13,12 +13,12 @@ public class TokenController {
 
   private final JwtService service;
 
-  @GetMapping("/token")
+  @GetMapping("/v1/token")
   public String getToken() {
     return service.generateToken();
   }
 
-  @GetMapping("/decode-token")
+  @GetMapping("/v1/decode-token")
   public Token decodeToken(JwtAuthenticationToken token) {
     return new Token(token.getToken(), token.getAuthorities());
   }

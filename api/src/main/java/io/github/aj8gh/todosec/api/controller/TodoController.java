@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TodoController {
 
-  @GetMapping("/temp")
+  @GetMapping("/v1/temp")
   public String temp() {
     return "*** temp ***";
   }

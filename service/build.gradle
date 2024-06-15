@@ -1,3 +1,10 @@
 dependencies {
+  implementation project(':api')
   implementation 'org.springframework.boot:spring-boot-starter-web'
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation "org.junit.platform:junit-platform-suite:$junitPlatformVersion"
+  testImplementation "io.cucumber:cucumber-junit-platform-engine:$cucumberVersion"
+  testImplementation "io.cucumber:cucumber-spring:$cucumberVersion"
+  testImplementation "io.cucumber:cucumber-java:$cucumberVersion"
 }
