@@ -4,7 +4,6 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
 import io.github.aj8gh.todosec.api.service.JwtService;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +18,8 @@ public class SecurityConfig {
 
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-    return httpSecurity
-        .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/token").permitAll()
+    return httpSecurity.authorizeHttpRequests(authorize -> authorize
+            .requestMatchers("/v1/token").permitAll()
             .anyRequest().authenticated())
         .oauth2ResourceServer(configure -> configure.jwt(Customizer.withDefaults()))
         .build();
@@ -43,9 +41,12 @@ public class SecurityConfig {
   }
 
   @Bean
-  RSAKey rsaKey(@Value("${jwt.rsa-key-size}") int rsaKeySize) throws JOSEException {
+  RSAKey rsaKey(
+      @Value("${jwt.rsa-key.size}") int rsaKeySize,
+      @Value("$jwt.rsa-key.id}") String id
+  ) throws JOSEException {
     return new RSAKeyGenerator(rsaKeySize)
-        .keyID(UUID.randomUUID().toString())
+        .keyID(id)
         .generate();
   }
 }

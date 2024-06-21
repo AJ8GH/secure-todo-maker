@@ -14,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
 @CucumberContextConfiguration
-//@AutoConfigureEmbeddedDatabase
 @ActiveProfiles("test")
 @SpringBootTest(classes = {Application.class}, webEnvironment = RANDOM_PORT)
 public class TestRunnerCucumber {

@@ -5,5 +5,20 @@ spring:
 
 jwt:
   issuer: https://aj8gh.github.io
-  rsa-key-size: 2048
   ttl-days: 1000
+  rsa-key:
+    size: 2048
+    id: 123
+#    id: 9305be52-6efa-4bca-ac55-1f0b994b52e3
+
+management:
+  endpoint:
+    enabled: '*'
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+server:
+  servlet:
+    contextPath: /todo
