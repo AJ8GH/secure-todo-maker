@@ -6,3 +6,22 @@ services:
       dockerfile: Dockerfile
     ports:
       - '8080:8080'
+
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: todomaker
+      POSTGRES_USER: todomaker
+      PGUSER: todomaker
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready' ]
+      interval: 5s
+      timeout: 5s
+      retries: 5

@@ -1,15 +1,31 @@
+aj8gh:
+  db:
+    host: localhost
+    name: todomaker
+    user: todomaker
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+  jwt:
+    issuer: https://aj8gh.github.io
+    ttl-days: 1000
+    rsa-key:
+      size: 2048
+
 spring:
+  config:
+    import: optional:secrets.yaml
   output:
     ansi:
       enabled: always
-
-jwt:
-  issuer: https://aj8gh.github.io
-  ttl-days: 1000
-  rsa-key:
-    size: 2048
-    id: 123
-#    id: 9305be52-6efa-4bca-ac55-1f0b994b52e3
+  datasource:
+    url: jdbc:postgresql://${aj8gh.db.host}:5432/${aj8gh.db.name}
+    username: ${aj8gh.db.user}
+    password: ${aj8gh.db.password}
+  jpa:
+    open-in-view: false
+    database-platform: ${aj8gh.db.dialect}
+    properties:
+      hibernate:
+        dialect: ${aj8gh.db.dialect}
 
 management:
   endpoint:

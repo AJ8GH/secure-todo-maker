@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class TestConfig {
 
-  private static final String ROOT_URI = "http://localhost:8080";
+  private static final String ROOT_URI = "http://localhost";
   private static final String MESSAGE = "Error response, status {}, body {}";
 
   @Bean
@@ -34,6 +34,7 @@ public class TestConfig {
       @Override
       @SneakyThrows
       public boolean hasError(ClientHttpResponse response) {
+        log.warn(MESSAGE, response.getStatusCode().value(), response.getBody());
         return false;
       }
 

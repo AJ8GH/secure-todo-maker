@@ -4,6 +4,7 @@ import static org.springframework.http.HttpMethod.GET;
 
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class HttpClient {
@@ -30,10 +32,14 @@ public class HttpClient {
       String endpoint,
       Class<T> responseType) {
     var request = new RequestEntity<T>(headers, GET, uri(endpoint));
-    return restTemplate.exchange(request, responseType);
+    var response = restTemplate.exchange(request, responseType);
+    log.info("status {} body {}", response.getStatusCode(), response.getBody());
+    return response;
   }
 
   private URI uri(String endpoint) {
-    return URI.create(BASE_URI + environment.getProperty(PORT_PROPERTY) + endpoint);
+    var uri = URI.create(BASE_URI + environment.getProperty(PORT_PROPERTY) + endpoint);
+    log.info("{}", uri);
+    return uri;
   }
 }
