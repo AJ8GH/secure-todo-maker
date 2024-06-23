@@ -1,5 +1,7 @@
 package io.github.aj8gh.todosec.api.config;
 
+import static io.github.aj8gh.todosec.api.constant.Endpoints.TOKEN;
+
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
@@ -21,7 +23,7 @@ public class SecurityConfig {
   SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     return httpSecurity
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/v1/token").permitAll()
+            .requestMatchers(TOKEN).permitAll()
             .anyRequest().authenticated())
         .oauth2ResourceServer(configure -> configure.jwt(Customizer.withDefaults()))
         .build();
